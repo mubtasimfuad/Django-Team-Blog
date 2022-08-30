@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Django Team</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script
+      src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Google fonts-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/ui.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link
+      href="{% static 'assets/favicon.ico' %}"
+      rel="shortcut icon"
+      type="image/x-icon"
+    />
+
+    <!-- Latest compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    {{ form.media }}
+    <script
+      src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
+      referrerpolicy="origin"
+    ></script>
+    <style>
+      /* one way */
+      .tox-notifications-container {
+        visibility: hidden;
+      }
+      /* another way */
+      .tox-notifications-container {
+        display: none;
+      }
+    </style>
+  </head>
+  <body style="background-image: url('{% static 'assets/img/pexels.jpg' %}')">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+      <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/">
+          <img
+            src="{% static 'assets/img/pondit0.png' %}"
+            alt="..."
+            height="46"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto py-4 py-lg-0">
+            <li class="nav-item">
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html"
+                >About</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html"
+                >Sample Post</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </div>
+        {% if user.is_authenticated %}
+
+        <ul class="navbar-nav pull-right">
+          <div class="widget-header">
+           <a href="/" class="link-secondary"> <small class="title text-light">{{user}} </small></a>
+            <center>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <img
+                    style="
+                      border-radius: 50px;
+                      -webkit-box-shadow: 2px 2px 5px 0px rgb(146, 213, 216);
+                      -moz-box-shadow: 2px 2px 5px 0px rgb(181, 217, 228);
+                      box-shadow: 2px 2px 5px 0px rgb(178, 237, 239);
+                    "
+                    src="{{profile_context.image.url}}"
+                    width="40"
+                    height="40"
+                    class="rounded-circle profile"
+                  />
+                </a>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="navbarDropdownMenuLink"
+                >
+                  <a class="dropdown-item" href="{% url 'account:profile' user.username %}">Dashboard</a>
+                  <a class="dropdown-item" href="#">Edit Profile</a>
+                  <a class="dropdown-item" href="{% url 'account:logout' %}">Log Out</a>
+                </div>
+              </li>
+            </center>
+          </div>
+        </ul>
+
+        {%else %}
+        <div class="pull-right">
+            <div class="d-flex justify-content-end mb-3 mb-lg-0">
+                <div class="widget-header">
+                    <small class="title text-info">Welcome guest!</small>
+                    <div> 
+                        <a class="text-light" href="{% url 'account:login' %}">Sign in</a> <span class="text-light"> | </span>
+                        <a class="text-light" href="{% url 'account:register' %}"> Register</a>
+                    </div>
+                </div>
+               
+            </div> <!-- widgets-wrap.// -->
+        </div> <!-- col.// -->
+        {%endif%}
+      </div>
+    </nav>
+    <!-- Navigation-->
+
+    <!-- Page Header-->
+
+    {% block content%} {%endblock%} 
+    <!-- Footer-->
+    <footer class="border-top">
+      <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <ul class="list-inline text-center">
+              <li class="list-inline-item">
+                <a href="#!">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#!">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#!">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <div class="small text-center text-muted fst-italic">
+              Copyright &copy; Mubtasim Fuad 2022
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <button
+      onclick="/post-create/"
+      style="width: 0px; visibility: hidden"
+      type="submit"
+      name="myBtn"
+    ></button>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script></script>
+  </body>
+</html>

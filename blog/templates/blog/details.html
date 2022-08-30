@@ -1,0 +1,369 @@
+{% extends 'blog/_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}  
+
+{% block content%}
+
+<header class="masthead" style="background-image: url('{% static 'assets/img/details-bg.jpg' %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7"> 
+                <div class="post-heading">
+                    {% if post.status == "published" or post.author == user %}
+                    <h1>{{post.title}}</h1>
+                    
+                    <h2 class="subheading"> <span class="meta">Posted by</span><a href="#!">{{post.author}}</a>
+                    </h2>
+                    <span class="meta">on  {{post.published_at}} | Modified on {{post.modified_at}}
+                    </span>
+                    <br>
+                    <div class="d-flex justify-content-start" >
+                        {%if user == post.author%}
+                        <a style="  text-align: center; " class="btn btn-info  btn-m rounded-pill font-italic" href="{% url "blog:post_update" post.id %}"> Edit </a>
+                        
+                        <a style="  text-align: center; "  class="btn btn-danger  btn-m rounded-pill font-italic" data-toggle="modal" data-target="#exampleModalCenter" >Delete</a>
+                       {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+</header>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle"><button type="button" class="btn btn-danger"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">   <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>   <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path> </svg>  </button></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+           <h3 class="text-info">Do you want to delete the post "{{post.title}}" ?</h3>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+             <a type="submit" class="btn btn-danger" href="{% url "blog:post_delete" post.id %}">Yes</a>
+          </div>
+        </div>
+    </div>
+  </div>
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+               <p> {{post.body | safe }}</p>      
+                
+            </div>
+        </div>
+    </div>
+</article>
+{%else%}
+<header class="masthead" style="background-image: url('{% static 'assets/img/404.png' %}'">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+            </div>
+        </div>
+    </div>
+</article>
+
+{%endif %}
+
+<br>
+{% if post.status == "published" %}
+
+<div class="container-lg">
+    <div class="post-comments">
+  
+        <form action="{% url 'blog:add_comment' post.uuid post.slug %}" enctype = "multiparty/form-data" method = "post">
+            <div class="form-group">
+          <label for="comment">Your Comment</label>
+            {{comment_form | crispy}}                        {% csrf_token %}
+    
+            <button type="submit" class="btn btn-default">Send</button>
+    
+                </div>
+      </form>
+
+      <koi class="comments-nav">
+        <ul class="nav nav-pills">
+          <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                    there are {{post.total_comment}} comments <span class="caret"></span>
+                  </a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Relevant</a></li>
+              <li><a href="#">All</a></li>
+            </ul>
+          </li>
+        </ul>
+    </div>
+
+      <div class="row">
+        {%for comment in comments%}
+
+
+        <div class="media  card-body box">
+
+          <!-- first comment -->
+  
+          <div class="media-heading" >
+            <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseThree{{comment.id}}" aria-expanded="true" aria-controls="collapseExample{{comment.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button> <span class="label label-info">124</span>
+          </div>
+          <div class="panel-collapse collapse in" id="collapseThree{{comment.id}}">
+  
+            <div class="media-left">
+                <div class="vote-wrap">
+                 
+                  <div class="vote up">
+                      <a a href="#" id="boot-icon" class="bi bi-arrow-up-square-fill fa-2x" style="color: rgb(0, 128, 55); "></a>                
+                   </div>
+                      <div class="vote inactive">
+                      <a href="#" id="boot-icon" class="bi bi-arrow-down-square-fill fa-2x" style="color: rgb(255, 0, 0);"></a>              
+                   </div>
+                                    <!-- vote-wrap -->
+                </div>
+                <!-- vote-wrap -->
+              </div>
+            <!-- media-left -->
+  
+  
+            <div class="media-body">
+                <span class="text-info">
+
+                <img src="{{comment.get_profile.image.url}}" class="img-xs icon rounded-circle">
+                {{comment.author}}
+                </span>
+                <span class="date text-muted float-md-right" style="display-inline-block">{{comment.created_at}} </span>  
+
+              <p>{{comment.body}}</p>
+              <div class="comment-meta">
+                <span><a href="#">go to top |</a></span>
+               
+                <span>
+                          <a class="" role="button" data-toggle="collapse" href="#replyCommentFour{{comment.id}}" aria-expanded="false" aria-controls="collapseExample{{comment.id}}">Reply</a>
+                        </span>
+                <div class="collapse" id="replyCommentFour{{comment.id}}">
+                    <form action="{% url 'blog:add_reply' comment.id post.uuid post.slug %}" enctype = "multiparty/form-data" method = "post">
+                                 <div class="form-group">
+                                    <label for="comment">Your reply</label>
+
+                                    {{reply_form | crispy}}  {% csrf_token %}
+                            
+                    </div>
+                    <button type="submit" class="btn btn-default">Reply</button>
+                  </form>
+                </div>
+              </div>
+              <!-- comment-meta -->
+            </div>
+            <br>
+              {%for reply in comment.get_replies%}
+
+              
+
+                <div class="media card card-body box"  style="display:inline; background-color:#ecf7ff; " >
+                  <!-- first comment -->
+
+                  <div class="media-heading">
+                    <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseFive{{reply.id}}" aria-expanded="false" aria-controls="collapseExample{{comment.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button> <span class="label label-info">123</span>
+                  </div>
+
+                  <div class="panel-collapse collapse in"   id="collapseFive{{reply.id}}">
+
+                    <div class="media-left">
+                      <div class="vote-wrap">
+                       
+                        <div class="vote up">
+                            <a a href="#" id="boot-icon" class="bi bi-arrow-up-square-fill fa-2x" style="color: rgb(0, 128, 55); "></a>                
+                         </div>
+                            <div class="vote inactive">
+                            <a href="#" id="boot-icon" class="bi bi-arrow-down-square-fill fa-2x" style="color: rgb(255, 0, 0);"></a>              
+                         </div>
+                                          <!-- vote-wrap -->
+                      </div>
+                      <!-- vote-wrap -->
+                    </div>
+                    <!-- media-left -->
+
+                  <div class="media-body"  style="background-color:#ecf7ff; "  >
+                   
+                    <div class="icontext w-100">
+                        <img src="{{reply.get_profile.image.url}}" class="img-xs icon rounded-circle">
+                        <div class="text">
+                            <span class="date text-muted float-md-right">{{reply.created_at}} </span>  
+                            <h6 class="mb-1">{{reply.author}} </h6>
+                            
+                        </div>
+                    </div> <!-- icontext.// -->
+                    <div class="mt-1">
+                        <p>
+                            {{reply.body}}
+                        </p>	
+                         
+                    </div>   
+                    <div class="comment-meta">
+                      <span><a href="#">Edit |</a></span>
+                      <span><a href="#">Delete |</a></span>
+                      <span>
+                                <a class="" role="button" data-toggle="collapse" href="#replyCommentFive{{reply.id}}" aria-expanded="false" aria-controls="collapseExample{{comment.id}}">reply</a>
+                              </span>
+                            </div>
+                        </div>
+                        <div>
+                      <div class="collapse" id="replyCommentFive{{reply.id}}">
+                        <form action="{% url 'blog:add_rereply' reply.id post.uuid post.slug %}" enctype = "multiparty/form-data" method = "post">
+                            <div class="form-group">
+                               <label for="comment">Your reply</label>
+
+                               {{rereply_form | crispy}}  {% csrf_token %}
+                               <button type="submit" class="btn btn-default">Reply</button>
+
+               </div>
+            </form>
+                         
+                      </div>
+                    </div>
+<div></div>
+                    <!-- comment-meta -->
+                    {%for rereply in reply.get_rereplies %}
+                    {% comment %} <div  style=" padding-left:50px;"> {% endcomment %}
+                      <div  style=" padding-left:50px;">
+
+                    <div class="media card card-body box" style=" display:inline-block" >
+                      <!-- first comment -->
+  
+                      <div class="media-heading">
+                        <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseFive{{reply.id}}" aria-expanded="false" aria-controls="collapseExample{{comment.id}}"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span></button> <span class="label label-info">124</span>
+                      </div>
+  
+                      <div class="panel-collapse collapse in" id="collapseFive{{reply.id}}">
+  
+                        <div class="media-left">
+                          <div class="vote-wrap">
+                           
+                            <div class="vote up">
+                              <a href=# class="bi bi-arrow-up-square-fill fa-2x"  style="color: rgb(0, 128, 55);"></a>
+                            </div>
+                            <div class="vote inactive">
+                              <a href=# class="bi bi-arrow-down-square-fill fa-2x" style="color: rgb(255, 0, 0);"></a>
+                            </div>
+                          </div>
+                          <!-- vote-wrap -->
+                        </div>
+                        <!-- media-left -->
+  
+                        <div class="media-body  ">
+                          
+                {% comment %} <koi  style="background-color:#ADD8E6 " class="card card-body box"> {% endcomment %}
+                    
+                    <div class="icontext w-100" >
+
+                        <img src="{{rereply.get_profile.image.url}}" class="img-xs icon rounded-circle">
+                        <div class="text" style="display-inline-block">
+                            <span class="date text-muted float-md-right" style="display-inline-block">{{rereply.created_at}} </span>  
+                            <h6 class="mb-1">{{rereply.author}} </h6>
+                            
+                        </div>
+                    </div> <!-- icontext.// -->
+                    <div class="mt-0">
+                        <p>
+                            {{rereply.body}}
+                        </p>	
+                         
+                    </div>   
+                    <div class="comment-meta">
+                        <span><a href="#">Edit |</a></span>
+                        <span><a href="#">Delete |</a></span>
+                        <span>
+                      <a class="" role="button" data-toggle="collapse" href="#replyCommentSix{{reply.id}}" aria-expanded="false" aria-controls="collapseExample{{comment.id}}">Reply</a>
+                    </span>
+                        <div class="collapse" id="replyCommentSix{{reply.id}}">
+                            <form action="{% url 'blog:add_rereply' reply.id post.uuid post.slug %}" enctype = "multiparty/form-data" method = "post">
+                                <div class="form-group">
+                                   <label for="comment">Your reply</label>
+    
+                                   {{rereply_form | crispy}}  {% csrf_token %}
+                                   <button type="submit" class="btn btn-default">Reply</button>
+    
+                   </div>
+                </form>
+                        </div>
+                      </div>
+                      <!-- comment-meta -->
+
+                     
+                {% comment %} </koi>     {% endcomment %}
+                          
+                              </div>
+                            </div>
+                            <!-- comments -->
+
+                        </div>
+                          <!-- answer to the first comment -->
+                    </div>
+                          {%endfor %}
+
+                        </div>
+
+                      </div>
+                      <!-- comments -->
+
+                    </koi>
+                    <!-- first comment -->
+                    {%endfor%}
+
+                  </div>
+
+                </div>
+                <!-- comments -->
+                {%endfor%}
+
+              </div>
+              <!-- answer to the first comment -->
+
+            </div>
+
+
+          </div>
+          <!-- comments -->
+
+  
+        </div>
+        <!-- first comment -->
+
+{%endif%}
+
+<script>
+    $('[data-toggle="collapse"]').on('click', function() {
+        var $this = $(this),
+                $parent = typeof $this.data('parent')!== 'undefined' ? $($this.data('parent')) : undefined;
+        if($parent === undefined) { /* Just toggle my  */
+            $this.find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+            return true;
+        }
+    
+        /* Open element will be close if parent !== undefined */
+        var currentIcon = $this.find('.glyphicon');
+        currentIcon.toggleClass('glyphicon-plus glyphicon-minus');
+        $parent.find('.glyphicon').not(currentIcon).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+    
+    });
+    
+</script>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends 'blog/_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}  
+
+{% block content%}
+<header class="masthead" >
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                
+                <div class="site-heading">
+                    <h1>Pondit Django Team Blog</h1>
+                    <span class="subheading">A Blog to discuss django best practices</span>
+                </div>
+
+            </div>
+         
+            </div>
+        </div>
+      
+
+</header>
+
+<div class="container">
+    <div class="row flex-lg-nowrap">
+      <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+        
+      </div>
+    
+      <div class="col">
+        <div class="row">
+          <div class="col mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="e-profile">
+                  <div class="row">
+                    <div class="col-12 col-sm-auto mb-3"  >
+                      <div class="mx-auto" style="width: 240px;">
+                        <form class="form" method="POST" enctype="multipart/form-data" novalidate="">
+                          {% csrf_token %}
+                          <div class="row" >
+                            <div class="col">
+                              <div class="form-group" style="display:inline">
+                                <img   src="{{profile.instance.image.url}}" height="140px" width="140px"  alt="...">                       
+                                <p class="mb-0 text-info">@{{form.instance.username}}</p>
+                                <div class="text-muted"><small>Last seen 2 hours ago</small></div>
+                               
+                              </div>
+                            </div>
+                            <div class="col">
+                              <div class="form-group">
+                                <i class="fa fa-fw fa-camera"></i>Change Photo{{profile.image}}
+
+                              </div>
+                            </div>
+                          </div>
+                        {% comment %} <div class="col d-flex justify-content-center align-items-center rounded" style="height: 140px; width:140px; display:inline; background-color: rgb(233, 236, 239);">
+                            <div class="mt-2"  style="display:inline">
+
+                               
+
+                              </div> {% endcomment %}
+                        </div>
+                      </div>
+                    </div>
+                   
+                  </div>
+                  <ul class="nav nav-tabs">
+                    <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                  </ul>
+                  <div class="tab-content pt-3">
+                    <div class="tab-pane active">
+                        <div class="row">
+                          <div class="col">
+                            <div class="row">
+                              <div class="col">
+                                <div class="form-group">
+                                {{form.first_name |as_crispy_field}}                               
+                               </div>
+                              </div>
+                              <div class="col">
+                                <div class="form-group">
+                                  {{form.last_name |as_crispy_field}}                               
+
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <div class="form-group">
+                                  {{form.email |as_crispy_field}}                               
+
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div class="form-group">
+                                  {{form.username |as_crispy_field}}                               
+
+                                </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col">
+                              <div class="form-group">
+                              {{form.phone |as_crispy_field}}                               
+                             </div>
+                            </div>
+                            <div class="col">
+                              <div class="form-group">
+                                {{profile.dob |as_crispy_field}}                               
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col">
+                              <div class="form-group">
+                              {{profile.linkedin |as_crispy_field}}                               
+                             </div>
+                            </div>
+                            <div class="col">
+                              <div class="form-group">
+                                {{profile.stake_overflow |as_crispy_field}}                               
+
+                              </div>
+                            </div>
+                            <div class="col">
+                              <div class="form-group">
+                                {{profile.github |as_crispy_field}}                               
+
+                              </div>
+                            </div>
+                          </div>
+                            <div class="row">
+                              <div class="col mb-3">
+                                <div class="form-group">
+                                 {{profile.address | as_crispy_field}}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+    {% comment %} <p>
+        <!-- Trigger Buttons HTML -->
+        <button type="button" class="btn btn-danger " data-bs-toggle="collapse" data-bs-target="#myCollapse">Change Password</button>
+    </p>
+    <!-- Collapsible Element HTML -->
+    <div class="collapse " id="myCollapse">
+        <div class="card card-body"  style="width: 450px;">
+          <div class="row">
+            <div class="col-12 col-sm-6 mb-3">
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label>Current Password</label>
+                    <input class="form-control" name="current_pass" type="password" placeholder="••••••">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label>New Password</label>
+                    <input name="new_pass" class="form-control" type="password" placeholder="••••••">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="form-group">
+                    <label>Confirm <span class="d-none d-xl-inline">Password</span></label>
+                    <input name="confirm_pass" class="form-control" type="password" placeholder="••••••"></div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+                         
+                        </div> {% endcomment %}
+                        <div class="row">
+                          <div class="col d-flex justify-content-end">
+                            <button class="btn btn-primary" type="submit">Save Changes</button>
+                          </div>
+                        </div>
+                      </form>
+    
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+          
+        </div>
+    
+      </div>
+    </div>
+    </div>
+
+{% endblock %}

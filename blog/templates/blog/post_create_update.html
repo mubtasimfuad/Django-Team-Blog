@@ -1,0 +1,77 @@
+{% extends 'blog/_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}  
+{% block content%}
+<link rel="stylesheet" href= "{% static 'css/form.css' %}" />
+
+<header class="masthead" style="background-image: url('{% static 'assets/img/dext.jpg' %}')">
+  <div class="container position-relative px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+              
+              <div class="site-heading">
+                  <h1>Pondit Django Team Blog</h1>
+                  <span class="subheading">A Blog to discuss django best practices</span>
+              </div>
+
+          </div>
+      
+
+</header>
+    <!--Contact form-->
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="contact-info">
+                  <img src="{% static 'assets/img/pondit0.png' %}" alt="image" height="76"/>
+
+                    <h3>{{h1message}}</h3>
+                    <img src="{% static 'assets/img/writes.png' %}" alt="image"/>
+
+                    <h4>Share your thoughts to the world!</h4>
+
+                </div>
+            </div>
+            
+            <div class="col-md-9">
+                <div class="contact-form" >
+                    <div class="form-group">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {{form.title|as_crispy_field }}
+                        {{form.body|as_crispy_field| safe}}
+                        {{form.status|as_crispy_field }}
+                      </div>
+                    </div>
+                    <div style="padding-top: 25px;"  class="d-flex justify-content-left mb-4">
+                      <button  type="submit" class="btn btn-primary text-uppercase">Submit</button>
+                    </div>
+                  </div>
+                    {% comment %} <div class="form-group">
+                      <div class="col-sm-10">          
+                        {{form.body|as_crispy_field}}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="email">Email:</label>
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label col-sm-2" for="comment">Comment:</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" rows="5" id="comment"></textarea>
+                      </div>
+                    </div> {% endcomment %}
+
+                     
+
+                    </form>
+                </div>
+            </div>
+        
+        
+    
+{%endblock%}

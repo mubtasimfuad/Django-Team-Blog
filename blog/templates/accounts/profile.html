@@ -1,0 +1,128 @@
+{% extends 'blog/_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}  
+
+{% block content%}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<header class="masthead" >
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                
+                <div class="site-heading">
+                    <h1>Pondit Django Team Blog</h1>
+                    <span class="subheading">A Blog to discuss django best practices</span>
+                </div>
+
+            </div>
+         
+            </div>
+        </div>
+      
+
+</header>
+
+<section class="section-content padding-y bg " style="position:relative; background:transparent">
+
+<div class="container">
+	<div class="row">
+	<aside  class="col-md-3" style="float:left;">
+		<div class="d-flex justify-content-center mb-4" style="padding-bottom: 0px;" ><a class="btn btn-info  btn-lg rounded-pill font-italic" href="{% url "blog:post_create" %}">Create New Post ⚡</a></div>
+		<!--   SIDEBAR   -->
+		<ul class="list-group" >
+			<div class="list-group-item" href="#page-top" style="background-color: #cfe2f3 ">
+				<center>  <h4 class='text-info'>{{user.first_name}} {{user.last_name}}</h4></center>
+				 <img class="img-fluid img-profile rounded-circle mx-auto mb-2"    src="{{profile.image.url}}"    height="30px"            alt="..."></span>
+				 <div style="background-color: #cfe2f3 " class="list-group-item">
+					<a class="col" href="{{profile.stake_overflow}}"><i  style="color:#F47F24 " class="fab fa-stack-overflow fa-2x"></i></a>
+					<a class='col' href="{{profile.linkedin}}"><i  style="color: #0e76a8" class="fab fa-linkedin-in fa-2x"></i></a>
+					<a class="col" href="{{profile.github}}"><i style="color: black " class="fab fa-github fa-2x"></i></i></a>
+		
+				</div>
+				</a>
+			<a class="list-group-item active" href="#"> Dashboard</a>
+			<a class="list-group-item" href="{% url 'account:profile_update' user.username %}"> Edit Profile </a>
+			<a class="list-group-item" href="#"> Following </a>
+		</ul>
+		<br>
+		<a class="btn btn-light btn-block" href="#"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a> 
+		<!--   SIDEBAR .//END   -->
+	</aside>
+	<main class="col-md-9 " style="float:left;>
+		<article class="card">
+		<header class="card-header">
+			<strong class="d-inline-block mr-3">Employee ID: {{profile.user.employee_id}}</strong>
+			<i class="bi bi-envelope"></i>&nbsp<a href="mailto:{{profile.user.email}}" class="text-info">{{profile.user.email}}</a>
+			
+		</header>
+		<div class="card-body">
+			<div class="row"> 
+				<div class="col-md-8">
+					<h6 class="text-muted">Address</h6>
+					<p class="panel panel-info panel-body" >
+						{{profile.address}}
+
+			 		</p>
+					 <h6 class="text-muted">Date joined</h6>
+					 <p class="panel panel-warning panel-body">
+						{{user.date_joined}}
+
+			 		</p>
+				</div>
+				<div class="col-md-4">
+					<h6 class="text-muted">Payment</h6>
+					<span class="text-success">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-heart-fill" viewBox="0 0 16 16">
+							<path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15Zm0-9.007c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
+						  </svg>						Total Comments:  {{total_comment}}  
+					</span>
+					 <br> 
+					 <span class="b">Total Post: {{total_post}}</span>
+					 
+				</div>
+			</div> <!-- row.// -->
+		</div> <!-- card-body .// -->
+		<div class="table-responsive">
+		<table class="table table-condensed" style="table-layout:fixed; background-color: rgba(255, 255, 255, .6);">
+			<tr class="text-info center" >
+				<th> Title </th>
+				<th> Post </th>
+				<th> Number of comments </th>
+				<th> Post Status </th>
+
+				<th> Post link </th>
+			  </tr>
+			{%for post in user_post%}
+			<tr>
+				<td class="text-center"> 
+					
+					<p class="title mb-0">{{post.title}} </p>
+					<var class=" text-muted">Published: {{post.published_at}}</var><br>
+					<var class=" text-muted">Modified: {{post.modified_at}}</var>
+
+				</td>
+
+				<td class="text-center"><a class="text-black" style="  text-decoration: none;" href="{{post.get_absolute_url}}"> {{post.body|truncatechars:170| safe}} </a></td>
+
+				<td width="65" class="text-center">
+					<p class="title mb-0">{{post.total_comment}} <i class="fa-solid fa-comment"></i></p>
+				</td>
+
+				<td width="250" class="text-center"> <a href="#" class="btn btn-outline-primary">{{post.status}}</a> </td>
+				<td>	<a href="{{ post.get_absolute_url }}" class="btn btn-success"> Details </a> </td>
+			</tr>
+			{%endfor%}
+		</table>
+		</div> <!-- table-responsive .end// -->
+		</article> <!-- order-group.// --> 
+	</main>
+</div> <!-- row.// -->
+</div>
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+{%endblock%}

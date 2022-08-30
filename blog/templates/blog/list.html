@@ -1,0 +1,146 @@
+{% extends 'blog/_base.html' %}
+{% load static %}
+
+{% block content%}
+<header class="masthead" style="background-image: url('{% static 'assets/img/office.jpg' %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                
+                <div class="site-heading">
+                    <h1>Pondit Django Team Blog</h1>
+                    <span class="subheading">A Blog to discuss django best practices</span>
+                </div>
+
+            </div>
+            <div  class="d-flex justify-content-center mt-3">
+                <form class="form-inline ">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search">
+                    <button class="btn btn-dark my-2 my-sm-0 text-white" type="submit">Search</button>
+                  </form>
+                </div>
+                
+            </div>
+        </div>
+      
+
+</header>
+
+ 
+<div class="container px-4 px-lg-5">
+  
+      
+<div class="row gx-4 gx-lg-5 justify-content-right pull-right">
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            
+    
+            <ul class="list-unstyled components">
+                <h4>Trending topics 🔥</h4>
+                {% for tag in tags%}
+                <li>
+                    <a href="#">#{{tag.tag__label}}</a>
+                    <br>
+                </li>
+                {%endfor%}
+                
+               
+            </ul>
+        </nav>
+        {% comment %} <nav id="sidebar">
+            
+    
+            <ul class="list-unstyled components">
+                <h4>Active authors 🔥</h4>
+                {% for tag in tags%}
+                <li>
+                    <a href="#">#{{tag.tag__label}}</a>
+                    <br>
+                </li>
+                {%endfor%}
+                
+               
+            </ul>
+        </nav> {% endcomment %}
+    
+    </div>
+</div>
+{% comment %} <div class="row gx-4 gx-lg-5 justify-content-right pull-left">
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            
+    
+            <ul class="list-unstyled components">
+                <h4>Trending topics 🔥</h4>
+                
+                <li>
+                    <a href="#">#About</a>
+                    <br>
+                </li>
+                
+                <li>
+                    <a href="#">#Portfolio</a>
+                    <br>
+
+                </li>
+                <li>
+                    <a href="#">#Contact</a>
+                    <br>
+
+                </li>
+            </ul>
+        </nav>
+    
+    </div>
+</div> {% endcomment %}
+          
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+ {% if user.is_authenticated %}   
+         
+<div class="d-flex justify-content-center mb-4" style="padding-bottom: 0px;" ><a class="btn btn-gray-light  btn-lg rounded-pill font-italic" href="{% url "blog:post_create" %}">Create New Post ⚡</a></div>
+            </div>
+            {%endif%}
+        </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+
+                
+                <!-- Post preview-->
+                {% for post in qs %}
+                {% if post.status == 'published' %}
+    
+                <div class="post-preview">
+                    <a href="{{ post.get_absolute_url }}">
+                        <h2 class="post-title text-info">{{ post.title}}</h2>
+                        <h4 class="post-subtitle">{{post.body|truncatechars:170| safe}}... See More</h4>
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="/">{{post.author}}</a>
+                        on {{post.published_at}}
+                    </p>
+                </div>
+                            <!-- Divider-->
+
+                <hr class="my-4" />
+    
+    
+                {% endif %}
+   
+
+            {% endfor %}
+            <!-- Post preview-->
+           
+            <!-- Divider-->
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
